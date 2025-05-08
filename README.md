@@ -1,4 +1,115 @@
-# sparePartDetection
+# Sparepart Detection Web Application
+
+This web application provides a tool to detect various spare parts for generators using a machine learning model. The application features both image upload and camera capture capabilities.
+
+## Features
+
+- **Image Upload**: Upload images of spare parts for detection
+- **Camera Capture**: Use your device's camera to directly capture images of spare parts for analysis
+- **Professional UI**: Industrial-grade interface designed for field technicians
+- **High Precision Detection**: Identifies 25 different generator spare parts with confidence scores
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v14 or later)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository
+2. Install dependencies:
+   ```
+   npm install
+   ```
+3. Start the development server:
+   ```
+   npm start
+   ```
+4. Open the application in your browser at `http://localhost:3000`
+
+## Using the Application
+
+### Image Upload
+
+1. Select the "Upload Image" tab
+2. Click the "Select Image" button to browse for an image
+3. Once selected, click "Analyze Part" to identify the spare part
+
+### Camera Capture
+
+1. Select the "Camera" tab
+2. Click the "Take Photo" button - this will launch your device's camera
+3. Take a photo of the spare part (your device's native camera app will be used)
+4. The captured image will appear in the application
+5. Click "Analyze Part" to identify the spare part
+6. Use "Take New Photo" if you want to capture a different image
+
+### Testing the Camera Feature
+
+#### Local Testing
+
+The camera feature can be tested in the following environments:
+
+1. **Chrome/Edge/Firefox on Mobile**: 
+   - Works best on mobile devices where the native camera app will be launched
+   - Camera permissions must be granted when prompted
+
+2. **Mobile Devices**:
+   - Access the application over HTTPS or on a local network
+   - For best results, test on an actual mobile device rather than an emulator
+   - Camera permissions must be granted via the browser settings
+
+3. **Desktop Browsers**:
+   - On desktop browsers, the file selector may open instead of the camera
+   - Some browsers may allow selecting from connected webcams
+
+#### Important Notes for Testing
+
+- **Secure Context**: Camera API only works in secure contexts (HTTPS or localhost)
+- **Camera Permissions**: The browser will request permission to access the camera
+- **Device Compatibility**: 
+  - Not all desktop browsers support direct camera capture
+  - For iOS devices, ensure you're using Safari for best compatibility
+  - The "capture" attribute enables direct camera access on supported mobile devices
+
+#### Deployment for Testing
+
+To test on devices across your network:
+1. Build the application:
+   ```
+   npm run build
+   ```
+2. Serve the built application using a simple HTTP server:
+   ```
+   npx serve -s build
+   ```
+3. Access the application from other devices using your computer's local IP address
+
+## Model Information
+
+The model is trained to recognize the following spare parts:
+
+- Gen Set 15 KVA (TMTL) Blower Assy
+- Gen Set 15 KVA (TMTL) Crankshaft
+- Gen Set 15 KVA (TMTL) Fuel Pump assy
+- Gen Set 15 KVA(TMTL) Piston & Gudgon Pin
+- And 21 more generator parts
+
+The model provides confidence scores for each prediction, indicating the level of certainty.
+
+## Technical Information
+
+This application is built with:
+- React.js
+- TypeScript
+- Material UI
+- TensorFlow.js (for running ML model in the browser)
+
+## License
+
+This project is licensed under the MIT License.
 
 # Converting a .h5 TensorFlow/Keras Model for Use in the Spare Part Detection System
 
