@@ -6,7 +6,6 @@ import {
   Stack, useTheme, useMediaQuery, IconButton, Backdrop
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { modelService } from '../services/modelService';
 import Camera from './Camera';
 import SettingsIcon from '@mui/icons-material/Settings';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
@@ -14,15 +13,26 @@ import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturing';
-import { getClassName } from '../utils/classMapping'; // Import the utility function
+import axios from 'axios';
+
+// Define the API endpoint URL (you might want to move this to an environment variable)
+const API_URL = 'http://localhost:8000';
 
 interface SparePartDetail {
   index: number;
-  'Folder name': string;
+  'part_name': string;
+  'category'?: string;
   'Part No': number | string;
   'Spare Nomenclature': string;
   OEM: string;
   // Add other columns as needed from your JSON
+}
+
+interface PredictionResponse {
+  predicted_class: string;
+  confidence: number;
+  processing_time: number;
+  part_details: SparePartDetail | null;
 }
 
 const StyledTabs = styled(Tabs)(({ theme }) => ({
@@ -45,94 +55,102 @@ const ImagePredictor: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [prediction, setPrediction] = useState<{ class: number; confidence: number } | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [prediction, setPrediction] = useState<PredictionResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isModelReady, setIsModelReady] = useState(false);
-  const [modelError, setModelError] = useState<string | null>(null);
+  const [isApiReady, setIsApiReady] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState(0);
   const imageRef = useRef<HTMLImageElement>(null);
-  const [sparePartDetails, setSparePartDetails] = useState<SparePartDetail[]>([]);
-  const [matchedDetails, setMatchedDetails] = useState<SparePartDetail | null>(null);
 
   useEffect(() => {
-    const loadModel = async () => {
+    // Check if the API is available
+    const checkApiStatus = async () => {
       try {
         setIsLoading(true);
-        await modelService.loadModel('/model/model.json');
-        setIsModelReady(true);
-        setModelError(null);
+        const response = await axios.get(`${API_URL}/health`);
+        if (response.data.status === 'healthy' && response.data.model_loaded) {
+          setIsApiReady(true);
+          setApiError(null);
+        } else {
+          setApiError('API is available but model is not properly loaded');
+        }
       } catch (error) {
-        console.error('Failed to load model:', error);
-        setModelError(error instanceof Error ? error.message : 'Unknown error loading model');
+        console.error('Failed to connect to API:', error);
+        setApiError('Cannot connect to API server. Please ensure the backend is running.');
       } finally {
         setIsLoading(false);
       }
     };
-    loadModel();
-
-    const loadSparePartDetails = async () => {
-      try {
-        const response = await fetch('/Details.json');
-        if (!response.ok) {
-          console.error(`HTTP error! status: ${response.status}`);
-          return;
-        }
-        const data: SparePartDetail[] = await response.json();
-        setSparePartDetails(data);
-      } catch (error) {
-        console.error('Error loading spare part details:', error);
-        // Optionally set an error state to inform the user
-      }
-    };
-    loadSparePartDetails();
+    
+    checkApiStatus();
   }, []);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setSelectedFile(file);
       const reader = new FileReader();
       reader.onload = (event) => {
         setSelectedImage(event.target?.result as string);
         setPrediction(null);
-        setMatchedDetails(null); // Clear previous details on new image
       };
       reader.readAsDataURL(file);
     }
   };
 
   const handleCameraCapture = (imageSrc: string) => {
+    // Convert data URL to File object
+    const dataURLToFile = (dataUrl: string, filename: string): File => {
+      const arr = dataUrl.split(',');
+      const mime = arr[0].match(/:(.*?);/)?.[1] || 'image/png';
+      const bstr = atob(arr[1]);
+      let n = bstr.length;
+      const u8arr = new Uint8Array(n);
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+      return new File([u8arr], filename, { type: mime });
+    };
+
+    const file = dataURLToFile(imageSrc, 'camera-capture.jpg');
+    setSelectedFile(file);
     setSelectedImage(imageSrc);
     setPrediction(null);
-    setMatchedDetails(null); // Clear previous details on new capture
   };
 
   const handlePredict = async () => {
-    if (!selectedImage || !imageRef.current || !isModelReady) return;
+    if (!selectedFile || !isApiReady) return;
 
     setIsLoading(true);
     try {
-      const result = await modelService.predict(imageRef.current);
-      findMatchingDetails(result.class); // result.class is now a number (index)
-      setPrediction(result);
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+
+      const response = await axios.post<PredictionResponse>(`${API_URL}/predict`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      
+      setPrediction(response.data);
     } catch (error) {
       console.error('Prediction failed:', error);
-      setModelError(error instanceof Error ? error.message : 'Prediction failed');
-      setMatchedDetails(null);
+      if (axios.isAxiosError(error) && error.response) {
+        setApiError(`Prediction failed: ${error.response.data.detail || error.message}`);
+      } else {
+        setApiError('Prediction failed. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }
   };
 
-  const findMatchingDetails = (predictedClassIndex: number) => {
-    const foundDetail = sparePartDetails.find(detail => detail.index === predictedClassIndex);
-    setMatchedDetails(foundDetail || null);
-  };
-
   const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
     setSelectedImage(null);
+    setSelectedFile(null);
     setPrediction(null);
-    setMatchedDetails(null); // Clear details on tab change
   };
 
   const renderConfidenceChip = (confidence: number) => {
@@ -179,7 +197,7 @@ const ImagePredictor: React.FC = () => {
           onClick={handlePredict}
           startIcon={<AnalyticsIcon />}
           sx={{ mt: 3, minWidth: 180 }}
-          disabled={isLoading || !isModelReady}
+          disabled={isLoading || !isApiReady}
         >
           {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Analyze Part'}
         </Button>
@@ -189,7 +207,6 @@ const ImagePredictor: React.FC = () => {
 
   const renderPredictionResult = () => {
     if (prediction) {
-      const predictedClassName = getClassName(prediction.class);
       return (
         <PredictionCard>
           <CardContent>
@@ -204,7 +221,7 @@ const ImagePredictor: React.FC = () => {
               IDENTIFIED COMPONENT
             </Typography>
             <Typography variant="h5" color="primary" fontWeight={600} gutterBottom>
-              {predictedClassName}
+              {prediction.predicted_class}
             </Typography>
             <Typography variant="overline" color="text.secondary">
               CONFIDENCE SCORE
@@ -215,7 +232,7 @@ const ImagePredictor: React.FC = () => {
             <Divider sx={{ mt: 4, mb: 2 }} />
 
             {/* Display Matched Details */}
-            {matchedDetails && (
+            {prediction.part_details && (
               <Box sx={{ mt: 2 }}>
                 <Typography variant="h6" fontWeight={500} gutterBottom>
                   Part Details
@@ -224,24 +241,30 @@ const ImagePredictor: React.FC = () => {
                   <Typography variant="subtitle2" component="span" fontWeight="bold">
                     Part Number:
                   </Typography>{' '}
-                  {matchedDetails['Part No']}
+                  {prediction.part_details['Part No']}
                 </Typography>
                 <Typography variant="body2">
                   <Typography variant="subtitle2" component="span" fontWeight="bold">
                     Nomenclature:
                   </Typography>{' '}
-                  {matchedDetails['Spare Nomenclature']}
+                  {prediction.part_details['Spare Nomenclature']}
+                </Typography>
+                <Typography variant="body2">
+                  <Typography variant="subtitle2" component="span" fontWeight="bold">
+                    Category:
+                  </Typography>{' '}
+                  {prediction.part_details.category || 'N/A'}
                 </Typography>
                 <Typography variant="body2">
                   <Typography variant="subtitle2" component="span" fontWeight="bold">
                     OEM:
                   </Typography>{' '}
-                  {matchedDetails.OEM}
+                  {prediction.part_details.OEM}
                 </Typography>
               </Box>
             )}
 
-            {!matchedDetails && (
+            {!prediction.part_details && (
               <Typography variant="body2" color="warning.main" sx={{ mt: 2 }}>
                 No matching part details found.
               </Typography>
@@ -298,9 +321,9 @@ const ImagePredictor: React.FC = () => {
               Industrial-grade ML system to identify generator spare parts with high accuracy.
             </Typography>
 
-            {modelError && (
+            {apiError && (
               <Alert severity="error" variant="filled" sx={{ mb: 3 }}>
-                {modelError}
+                {apiError}
               </Alert>
             )}
 
@@ -320,7 +343,7 @@ const ImagePredictor: React.FC = () => {
                     startIcon={<UploadFileIcon />}
                     size="large"
                     sx={{ my: 2, minWidth: 220 }}
-                    disabled={!isModelReady || isLoading}
+                    disabled={!isApiReady || isLoading}
                   >
                     Select Image
                     <input type="file" hidden accept="image/*" onChange={handleImageUpload} />
@@ -337,12 +360,12 @@ const ImagePredictor: React.FC = () => {
               )}
             </Card>
 
-            {/* Loader While Model Loads */}
-            {!isModelReady && !modelError && (
+            {/* Loader While API Connects */}
+            {!isApiReady && !apiError && (
               <Backdrop open>
                 <CircularProgress color="primary" />
                 <Typography variant="h6" sx={{ ml: 2 }}>
-                  Initializing AI model...
+                  Connecting to AI service...
                 </Typography>
               </Backdrop>
             )}

@@ -1,0 +1,178 @@
+[
+  {
+    "index": 0,
+    "part_name": "Brake Disc",
+    "category": "ATV",
+    "Part No": "5254272",
+    "Spare Nomenclature": "Brake Disc Rear",
+    "OEM": "Polaris Engineered parts"
+  },
+  {
+    "index": 1,
+    "part_name": "Brake pad",
+    "category": "ATV",
+    "Part No": "2205949",
+    "Spare Nomenclature": "Brake pad",
+    "OEM": "Polaris Engineered parts"
+  },
+  {
+    "index": 2,
+    "part_name": "Clutch Drive",
+    "category": "ATV",
+    "Part No": "1323173",
+    "Spare Nomenclature": "Clutch Drive Primary",
+    "OEM": "Polaris Engineered parts"
+  },
+  {
+    "index": 3,
+    "part_name": "Control Arm",
+    "category": "ATV",
+    "Part No": "1022028",
+    "Spare Nomenclature": "ASM Control Arm",
+    "OEM": "Polaris Engineered parts"
+  },
+  {
+    "index": 4,
+    "part_name": "Gen Set 15 KVA (TMTL) Blower Assy",
+    "category": "Genset",
+    "Part No": 93131622,
+    "Spare Nomenclature": "Blower Shaft Assy (With Cooling Imp)",
+    "OEM": "Lucas TVS Limited"
+  },
+  {
+    "index": 5,
+    "part_name": "Gen Set 15 KVA (TMTL) Crankshaft",
+    "category": "Genset",
+    "Part No": 93179898,
+    "Spare Nomenclature": "Crank Shaft Assy Balanced",
+    "OEM": "Lucas TVS Limited"
+  },
+  {
+    "index": 6,
+    "part_name": "Gen Set 15 KVA (TMTL) Fuel Pump assy",
+    "category": "Genset",
+    "Part No": 1711880,
+    "Spare Nomenclature": "Fuel Feed Pump Assy",
+    "OEM": "Lucas TVS Limited"
+  },
+  {
+    "index": 7,
+    "part_name": "Gen Set 15 Kva &35 KVA(TMTL) Air Filter",
+    "category": "Genset",
+    "Part No": 1977326,
+    "Spare Nomenclature": "Main Element For Air Cleaner",
+    "OEM": "Lucas TVS Limited"
+  },
+  {
+    "index": 8,
+    "part_name": "Gen Set 15 Kva &35 KVA(TMTL) Alternator Assy 12 V",
+    "category": "Genset",
+    "Part No": 26021467,
+    "Spare Nomenclature": "A115-12V-36A Alternator",
+    "OEM": "Lucas TVS Limited"
+  },
+  {
+    "index": 9,
+    "part_name": "Gen Set 15 Kva &35 KVA(TMTL) Connecting Rod",
+    "category": "Genset",
+    "Part No": 1975093,
+    "Spare Nomenclature": "connecting Rod Assy (With Bush Bolt)",
+    "OEM": "Tata motors & Tractors LTd"
+  },
+  {
+    "index": 10,
+    "part_name": "Gen Set 15 Kva &35 KVA(TMTL) Cyl Head",
+    "category": "Genset",
+    "Part No": 93241531,
+    "Spare Nomenclature": "Cylinder Head Sub Assy",
+    "OEM": "Lucas TVS Limited"
+  },
+  {
+    "index": 11,
+    "part_name": "Gen Set 15 Kva &35 KVA(TMTL) Fuel Hose",
+    "category": "Genset",
+    "Part No": 1975390,
+    "Spare Nomenclature": "Hose Over Flow 125MM",
+    "OEM": "Lucas TVS Limited"
+  },
+  {
+    "index": 12,
+    "part_name": "Gen Set 15 Kva &35 KVA(TMTL) Injector",
+    "category": "Genset",
+    "Part No": 93241520,
+    "Spare Nomenclature": "Injector Assy",
+    "OEM": "Lucas TVS Limited"
+  },
+  {
+    "index": 13,
+    "part_name": "Gen Set 15 Kva &35 KVA(TMTL) Oil Preasssure Gauge",
+    "category": "Genset",
+    "Part No": 359301000,
+    "Spare Nomenclature": "Lube  Oil Pressure Guage Pipe 1.3",
+    "OEM": "Kirlosker Oil Engine LTD."
+  },
+  {
+    "index": 14,
+    "part_name": "Gen Set 15 Kva &35 KVA(TMTL) Sleeves",
+    "category": "Genset",
+    "Part No": 93250593,
+    "Spare Nomenclature": "Cylinder Liner STD",
+    "OEM": "Lucas TVS Limited"
+  },
+  {
+    "index": 15,
+    "part_name": "Gen Set 15 Kva ,35 KVA & 63 KVA (TMTL) Flywheel Ring",
+    "category": "Genset",
+    "Part No": 93150513,
+    "Spare Nomenclature": "Ring Gear",
+    "OEM": "Tata motors & Tractors LTd"
+  },
+  {
+    "index": 16,
+    "part_name": "Gen Set 35 KVA (TMTL) Oil Filter",
+    "category": "Genset",
+    "Part No": 1384557,
+    "Spare Nomenclature": "Oil Filter  Assy Complete",
+    "OEM": "Lucas TVS Limited"
+  },
+  {
+    "index": 17,
+    "part_name": "Gen Set 35 KVA(TMTL) Piston",
+    "category": "Genset",
+    "Part No": 93252255,
+    "Spare Nomenclature": "Piston 98 Series",
+    "OEM": "Lucas TVS Limited"
+  },
+  {
+    "index": 18,
+    "part_name": "Head Light",
+    "category": "ATV",
+    "Part No": "2211854",
+    "Spare Nomenclature": "Bumber Head Light",
+    "OEM": "Polaris Engineered parts"
+  },
+  {
+    "index": 19,
+    "part_name": "Hub Wheel Front",
+    "category": "ATV",
+    "Part No": "5137659/067",
+    "Spare Nomenclature": "Hub Wheel Front Block",
+    "OEM": "Polaris Engineered parts"
+  },
+  {
+    "index": 20,
+    "part_name": "Hub Wheel Rear",
+    "category": "ATV",
+    "Part No": "5137278",
+    "Spare Nomenclature": "Hub Wheel Rear",
+    "OEM": "Polaris Engineered parts"
+  },
+  {
+    "index": 21,
+    "part_name": "Shocker Assy",
+    "category": "ATV",
+    "Part No": "7517685",
+    "Spare Nomenclature": "Shocker Assy",
+    "OEM": "Polaris Engineered parts"
+  }
+]
