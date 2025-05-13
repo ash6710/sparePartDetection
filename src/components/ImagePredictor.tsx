@@ -134,7 +134,7 @@ const ImagePredictor: React.FC = () => {
       });
       
       setPrediction(response.data);
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Prediction failed:', error);
       if (axios.isAxiosError(error) && error.response) {
         setApiError(`Prediction failed: ${error.response.data.detail || error.message}`);

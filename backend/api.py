@@ -28,8 +28,8 @@ app.add_middleware(
 )
 
 # Initialize the classifier globally for faster predictions
-model_path = "improved_parts_modelv4.h5"
-details_json_path = "Details.json"
+model_path = "backend/improved_parts_modelv4.h5"
+details_json_path = "backend/Details.json"
 IMG_SIZE = (224, 224)  # Default model input size
 
 # Load part details from JSON file
