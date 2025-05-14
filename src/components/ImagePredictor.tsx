@@ -15,8 +15,9 @@ import EngineeringIcon from '@mui/icons-material/Engineering';
 import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturing';
 import axios from 'axios';
 
-// Define the API endpoint URL (you might want to move this to an environment variable)
-const API_URL = 'http://localhost:8000';
+// Define the API endpoint URL using window.location to determine the host
+const API_URL = process.env.REACT_APP_API_URL || 
+                `${window.location.protocol}//${window.location.hostname}:8000`;
 
 interface SparePartDetail {
   index: number;

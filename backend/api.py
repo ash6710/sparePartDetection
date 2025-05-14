@@ -18,18 +18,19 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Add CORS middleware to allow cross-origin requests from the React frontend
+# Add CORS middleware to allow cross-origin requests from any origin
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins, modify in production
+    allow_origins=["*"],  # Allows all origins
     allow_credentials=True,
     allow_methods=["*"],  # Allows all methods
     allow_headers=["*"],  # Allows all headers
+    expose_headers=["*"],  # Expose all headers
 )
 
 # Initialize the classifier globally for faster predictions
-model_path = "backend/improved_parts_modelv4.h5"
-details_json_path = "backend/Details.json"
+model_path = "improved_parts_modelv4.h5"  # Updated path relative to container
+details_json_path = "Details.json"  # Updated path relative to container
 IMG_SIZE = (224, 224)  # Default model input size
 
 # Load part details from JSON file
