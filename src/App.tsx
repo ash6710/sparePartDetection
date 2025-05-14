@@ -1,6 +1,7 @@
 import React from 'react';
-import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import { CssBaseline, ThemeProvider, createTheme, Box } from '@mui/material';
 import ImagePredictor from './components/ImagePredictor';
+import Footer from './components/Footer';
 
 const theme = createTheme({
   palette: {
@@ -54,7 +55,18 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <ImagePredictor />
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          minHeight: '100vh',
+        }}
+      >
+        <Box component="main" sx={{ flexGrow: 1 }}>
+          <ImagePredictor />
+        </Box>
+        <Footer />
+      </Box>
     </ThemeProvider>
   );
 }

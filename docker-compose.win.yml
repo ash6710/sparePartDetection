@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  backend:
+    image: rahulmadaann/spare-parts-backend:latest
+    container_name: spare-parts-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    networks:
+      - spare-parts-network
+
+  frontend:
+    image: rahulmadaann/spare-parts-frontend:latest
+    container_name: spare-parts-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - spare-parts-network
+
+networks:
+  spare-parts-network:
+    driver: bridge 

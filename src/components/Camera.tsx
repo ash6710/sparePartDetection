@@ -102,7 +102,7 @@ const Camera: React.FC<CameraProps> = ({ onCapture, isLoading }) => {
               <FlipCameraAndroidIcon fontSize="small" />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Information" placement="top">
+          <Tooltip title="Use the camera to capture the image" placement="top">
             <IconButton size="small">
               <InfoOutlinedIcon fontSize="small" />
             </IconButton>

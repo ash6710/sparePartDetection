@@ -282,7 +282,7 @@ const ImagePredictor: React.FC = () => {
       <Card sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', p: 4 }}>
         <EngineeringIcon sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
         <Typography variant="h6" color="text.secondary">
-          No Part Detected Yet
+          No Part Identified Yet
         </Typography>
       </Card>
     );
@@ -295,7 +295,7 @@ const ImagePredictor: React.FC = () => {
         <Toolbar>
           <PrecisionManufacturingIcon sx={{ mr: 2, color: theme.palette.primary.main }} />
           <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 600 }}>
-            TMTL Spare Part Detection System
+            Dynamix AI
           </Typography>
           {isMobile ? (
             <IconButton color="inherit">
@@ -316,10 +316,10 @@ const ImagePredictor: React.FC = () => {
           {/* Left Section */}
           <Box sx={{ flex: 2 }}>
             <Typography variant="h4" gutterBottom>
-              Spare Part Detection
+              Spare Part Identification System
             </Typography>
             <Typography variant="body1" color="text.secondary" paragraph>
-              Industrial-grade ML system to identify generator spare parts with high accuracy.
+              Industrial-grade ML system to identify Generator set and ATV spare parts with high accuracy.
             </Typography>
 
             {apiError && (
